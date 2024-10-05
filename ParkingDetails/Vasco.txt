@@ -1,0 +1,5 @@
+Parking Details of Vasco:
+Entry Time: 05-10-02024 16:51
+Exit Time: 05-10-02024 16:52
+Time Spent: 0.00 minutes
+Amount to Pay: $0.00

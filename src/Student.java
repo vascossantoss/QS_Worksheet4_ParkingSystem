@@ -4,62 +4,76 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * @version 1.1
+ * @author gsn
+ * @version 1.2
+ *
+ * Class that represents the student
  */
 public class Student {
 
-    private String name;
     private String id;
+    private String name;
+    private String licencePlate;
     private LocalDateTime enterTime;
     private LocalDateTime exitTime;
-    private List<Car> cars;
 
-    public Student(String nome, String id) {
-        this.name = name;
+    /**
+     * Constructor
+     * @param id
+     * @param name
+     * @param licencePlate
+     */
+    public Student(String id, String name, String licencePlate) {
         this.id = id;
-        this.cars = new ArrayList<>();
+        this.name = name;
+        this.licencePlate = licencePlate;
     }
 
+    /**
+     *  Get student name
+     * @return name Student name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get student number
+     * @return id
+     */
     public String getId() {
         return id;
     }
 
-    public void addCar(Car car) {
-        cars.add(car);
-    }
-
-    public List<Car> getCars() {
-        return cars;
-    }
-
+    /**
+     * Registers time student has entered the park
+     */
     public void enter(){
         this.enterTime = LocalDateTime.now();
     }
 
+    /**
+     * Registers time student has exited the park
+     */
     public void exit(){
         this.exitTime = LocalDateTime.now();
     }
 
+    /**
+     * Calculates parking fee of student
+     * @return value of parking fee
+     */
     public double calculateParkingFee(){
         Duration duration = Duration.between(enterTime, exitTime);
         long minutes = duration.toMinutes();
         return (double) minutes / ParkingManagement.TIME_INTERVAL * ParkingManagement.PARKING_FEE;
-        /*
-            public static final double PARKING_FEE = 0.1;
-            public static final double TIME_INTERVAL = 15.0;
-
-            !!! This two constants must be declared in ParkingManagement.java for this method to work
-         */
     }
 
+    /**
+     * Saves parking details to file (Entry time, Exit time, Time Spent, Amount to pay)
+     */
     public void saveParkingDetailsToFile(){
         // Format the output details
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyyy HH:mm");
@@ -68,7 +82,7 @@ public class Student {
         Duration duration = Duration.between(enterTime, exitTime);
         double hoursSpent = (double) duration.toMinutes();
         double totalAmountToPay = calculateParkingFee();
-        String filename = name + ".text";
+        String filename = "ParkingDetails/" + name + ".txt";
 
         String parkingDetails = String.format(
                 "Parking Details of %s:\nEntry Time: %s\nExit Time: %s\nTime Spent: %.2f minutes\nAmount to Pay: $%.2f\n",
@@ -85,12 +99,15 @@ public class Student {
     }
 
 
+    /**
+     * @return student details
+     */
     @Override
     public String toString() {
         return "Student{" +
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
-                ", cars=" + cars +
+                ", licencePlate=" + licencePlate +
                 '}';
     }
 }
